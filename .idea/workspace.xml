@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="build(dependencies): change theme and add needed plugins">
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): add main page and logo">
+      <change afterPath="$PROJECT_DIR$/docs/api-docs/api-authentication.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -78,7 +78,7 @@
       <updated>1741375014085</updated>
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
-      <workItem from="1741379254634" duration="375000" />
+      <workItem from="1741379254634" duration="1076000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -136,7 +136,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741376940520</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="feat(doc): add main page and logo">
+      <option name="closed" value="true" />
+      <created>1741379696556</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1741379696556</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -149,7 +157,8 @@
     <MESSAGE value="ci(git): add gitignore" />
     <MESSAGE value="feat(docker): add dockerFile for serve build production" />
     <MESSAGE value="build(dependencies): change theme and add needed plugins" />
-    <option name="LAST_COMMIT_MESSAGE" value="build(dependencies): change theme and add needed plugins" />
+    <MESSAGE value="feat(doc): add main page and logo" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): add main page and logo" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

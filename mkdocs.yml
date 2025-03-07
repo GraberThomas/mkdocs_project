@@ -8,3 +8,23 @@ plugins:
   - mermaid2:
       version: 11.1.0
   - swagger-ui-tag
+
+nav:
+  - Home: index.md
+  - API Docs:
+    - API Authentication: api-docs/api-authentication.md
+    - API Endpoints - Swagger: api-docs/api-endpoints.md
+    - API FAQ: api-docs/api-faq.md
+  - Product Docs:
+    - Features: product-docs/api-features.md
+    - Use cases: product-docs/api-use-cases.md
+    - Roadmap Overview: product-docs/roadmap-overview.md
+    - Changelog: product-docs/changelog.md
+  - System Docs:
+    - Architecture: system-docs/api-architecture.md
+    - Tech stack: system-docs/api-tech-stack.md
+  - Annexes:
+      - Annexes: annex/glossary-references.md
+  - About:
+    - About us: about/about.md
+    - Licence: about/license.md
