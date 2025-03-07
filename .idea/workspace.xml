@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="pycharm settings" />
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="ci(settings): pycharm settings">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -60,7 +65,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741375014085</updated>
-      <workItem from="1741375015107" duration="313000" />
+      <workItem from="1741375015107" duration="1271000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -70,7 +75,31 @@
       <option name="project" value="LOCAL" />
       <updated>1741375037762</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="build(dependencies): add mkdocs">
+      <option name="closed" value="true" />
+      <created>1741375373144</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1741375373144</updated>
+    </task>
+    <task id="LOCAL-00003" summary="build(dependencies): add mkdocs">
+      <option name="closed" value="true" />
+      <created>1741375447496</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1741375447496</updated>
+    </task>
+    <task id="LOCAL-00004" summary="ci(settings): pycharm settings">
+      <option name="closed" value="true" />
+      <created>1741375485838</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1741375485838</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -78,6 +107,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="pycharm settings" />
-    <option name="LAST_COMMIT_MESSAGE" value="pycharm settings" />
+    <MESSAGE value="build(dependencies): add mkdocs" />
+    <MESSAGE value="ci(settings): pycharm settings" />
+    <option name="LAST_COMMIT_MESSAGE" value="ci(settings): pycharm settings" />
   </component>
 </project>
