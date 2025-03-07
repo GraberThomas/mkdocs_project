@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(docker): add dockerFile for serve build production">
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="build(dependencies): change theme and add needed plugins">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/index.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/index.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mkdocs.yml" beforeDir="false" afterPath="$PROJECT_DIR$/mkdocs.yml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -17,21 +17,21 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "GraberThomas"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;GraberThomas&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/GraberThomas/mkdocs_project.git",
-    "accountId": "bf65ec78-b366-434e-8f83-433d00fa48b2"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/GraberThomas/mkdocs_project.git&quot;,
+    &quot;accountId&quot;: &quot;bf65ec78-b366-434e-8f83-433d00fa48b2&quot;
   }
-}]]></component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 2
-}]]></component>
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2
+}</component>
   <component name="ProjectId" id="2u0AFN0PQDxTWJJUgNRK3rCZHFw" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -45,14 +45,21 @@
     "RunOnceActivity.git.unshallow": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "master",
+    "last_opened_file_path": "/home/thomas/Documents/Cours_LeanIT/documentation_technique/mkdocs_project",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/docs/img" />
+    </key>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -69,7 +76,9 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1741375014085</updated>
-      <workItem from="1741375015107" duration="1741000" />
+      <workItem from="1741375015107" duration="2209000" />
+      <workItem from="1741377231973" duration="1450000" />
+      <workItem from="1741379254634" duration="375000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -119,7 +128,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741376416089</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="build(dependencies): change theme and add needed plugins">
+      <option name="closed" value="true" />
+      <created>1741376940520</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1741376940520</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -131,6 +148,11 @@
     <MESSAGE value="ci(settings): pycharm settings" />
     <MESSAGE value="ci(git): add gitignore" />
     <MESSAGE value="feat(docker): add dockerFile for serve build production" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(docker): add dockerFile for serve build production" />
+    <MESSAGE value="build(dependencies): change theme and add needed plugins" />
+    <option name="LAST_COMMIT_MESSAGE" value="build(dependencies): change theme and add needed plugins" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
   </component>
 </project>
