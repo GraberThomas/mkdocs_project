@@ -4,14 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): licence page">
-      <change afterPath="$PROJECT_DIR$/diagrams/api_archi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/diagrams/doc_archi.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/img/feastverse_documentation_architecture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/img/feastverse_system_architecture.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/system-docs/api-architecture.md" afterDir="false" />
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): add architecture page">
+      <change afterPath="$PROJECT_DIR$/docs/annex/glossary-references.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,7 +85,7 @@
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
       <workItem from="1741379254634" duration="3648000" />
-      <workItem from="1741440121658" duration="3327000" />
+      <workItem from="1741440121658" duration="4440000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -251,7 +247,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741441447544</updated>
     </task>
-    <option name="localTasksCounter" value="21" />
+    <task id="LOCAL-00021" summary="feat(doc): add architecture page">
+      <option name="closed" value="true" />
+      <created>1741443549477</created>
+      <option name="number" value="00021" />
+      <option name="presentableId" value="LOCAL-00021" />
+      <option name="project" value="LOCAL" />
+      <updated>1741443549477</updated>
+    </task>
+    <option name="localTasksCounter" value="22" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -277,7 +281,8 @@
     <MESSAGE value="feat(doc): api stack page" />
     <MESSAGE value="feat(doc): api about page" />
     <MESSAGE value="feat(doc): licence page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): licence page" />
+    <MESSAGE value="feat(doc): add architecture page" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): add architecture page" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
