@@ -4,8 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): add changelog page">
-      <change afterPath="$PROJECT_DIR$/docs/system-docs/api-tech-stack.md" afterDir="false" />
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): api stack page">
+      <change afterPath="$PROJECT_DIR$/docs/about/about.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/docs/about/license.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +80,7 @@
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
       <workItem from="1741379254634" duration="3648000" />
-      <workItem from="1741440121658" duration="858000" />
+      <workItem from="1741440121658" duration="1244000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -216,7 +218,15 @@
       <option name="project" value="LOCAL" />
       <updated>1741440757678</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="feat(doc): api stack page">
+      <option name="closed" value="true" />
+      <created>1741441098125</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1741441098125</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -239,7 +249,8 @@
     <MESSAGE value="feat(doc): add api-use-case page" />
     <MESSAGE value="feat(doc): add roadmap overview page" />
     <MESSAGE value="feat(doc): add changelog page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): add changelog page" />
+    <MESSAGE value="feat(doc): api stack page" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): api stack page" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
