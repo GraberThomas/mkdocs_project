@@ -29,7 +29,8 @@ jobs:
       
       - name: 🔄 Trigger Railway Deployment
         run: |
-          curl -X POST "https://backboard.railway.app/graphql/v2" \
+          curl https://backboard.railway.app/graphql/v2 \
+          -X POST \
           -H "Authorization: Bearer ${{ secrets.RAILWAY_API_TOKEN }}" \
           -H "Content-Type: application/json" \
-          --data '{ "query": "mutation { deploymentCreate(input: { projectId: \"${{ secrets.RAILWAY_PROJECT_ID }}\" }) { id } }" }'
+          --data "{\"query\":\"mutation { deploymentRedeploy(id: \\\"${{ secrets.RAILWAY_PROJECT_ID }}\\\") { status } }\"}" \

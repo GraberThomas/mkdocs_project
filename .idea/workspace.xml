@@ -4,8 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="ci(action): rename action file">
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="ci(action): add deploy on railway">
       <change beforePath="$PROJECT_DIR$/.github/workflows/docker-publish.yml" beforeDir="false" afterPath="$PROJECT_DIR$/.github/workflows/docker-publish.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -83,7 +84,7 @@
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
       <workItem from="1741379254634" duration="3648000" />
-      <workItem from="1741440121658" duration="8439000" />
+      <workItem from="1741440121658" duration="8982000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -325,14 +326,29 @@
       <option name="project" value="LOCAL" />
       <updated>1741450110850</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="ci(action): add deploy on railway">
+      <option name="closed" value="true" />
+      <created>1741450492689</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1741450492689</updated>
+    </task>
+    <task id="LOCAL-00032" summary="ci(action): add deploy on railway">
+      <option name="closed" value="true" />
+      <created>1741450692747</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1741450692747</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="ci(settings): pycharm settings" />
     <MESSAGE value="ci(git): add gitignore" />
     <MESSAGE value="feat(docker): add dockerFile for serve build production" />
     <MESSAGE value="build(dependencies): change theme and add needed plugins" />
@@ -357,7 +373,8 @@
     <MESSAGE value="ci(action): deploy on docker when main change" />
     <MESSAGE value="docs(readme): add link to deployed docs" />
     <MESSAGE value="ci(action): rename action file" />
-    <option name="LAST_COMMIT_MESSAGE" value="ci(action): rename action file" />
+    <MESSAGE value="ci(action): add deploy on railway" />
+    <option name="LAST_COMMIT_MESSAGE" value="ci(action): add deploy on railway" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
