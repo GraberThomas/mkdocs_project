@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="doc(readme): add the readme of the app">
-      <change beforePath="$PROJECT_DIR$/docs/about/about.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/about/about.md" afterDir="false" />
-    </list>
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="ci(action): deploy on docker when main change" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -83,7 +81,7 @@
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
       <workItem from="1741379254634" duration="3648000" />
-      <workItem from="1741440121658" duration="6943000" />
+      <workItem from="1741440121658" duration="7444000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -277,7 +275,23 @@
       <option name="project" value="LOCAL" />
       <updated>1741448661581</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="feat(doc): add mail in about contact">
+      <option name="closed" value="true" />
+      <created>1741448943708</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1741448943708</updated>
+    </task>
+    <task id="LOCAL-00026" summary="ci(action): deploy on docker when main change">
+      <option name="closed" value="true" />
+      <created>1741449426343</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1741449426343</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,7 +321,9 @@
     <MESSAGE value="feat(doc): add glossary reference page" />
     <MESSAGE value="build(docker): dockerfile now build the app" />
     <MESSAGE value="doc(readme): add the readme of the app" />
-    <option name="LAST_COMMIT_MESSAGE" value="doc(readme): add the readme of the app" />
+    <MESSAGE value="feat(doc): add mail in about contact" />
+    <MESSAGE value="ci(action): deploy on docker when main change" />
+    <option name="LAST_COMMIT_MESSAGE" value="ci(action): deploy on docker when main change" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

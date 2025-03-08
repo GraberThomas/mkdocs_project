@@ -104,4 +104,7 @@ mkdocs_project/
 │── requirements.txt # Python dependencies
 ```
 
+An example of the docs is running in :
+https://featversedocs-production.up.railway.app
+
 🚀 **Now you're ready to build and serve your documentation!**
