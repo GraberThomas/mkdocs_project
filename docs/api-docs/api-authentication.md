@@ -4,6 +4,7 @@ FeastVerse provides a secure authentication system that assigns roles to users, 
 
 ## User Registration and Authentication
 
+
 ### 1. User Registration
 Users can register an account using the `/auth/signup` endpoint. This requires providing details such as username, email, and password.
 
