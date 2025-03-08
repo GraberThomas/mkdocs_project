@@ -1,0 +1,5380 @@
+openapi: 3.0.1
+info:
+  title: FeastVerse API
+  description: Create and save cooking recipes. Allows you to have ideas and comment
+    on recipes.
+  contact:
+    name: Thomas GRABER
+    email: htomas.graber.pro@gmail.com
+  version: v1
+servers:
+- url: /api/v1
+  description: Default Server URL
+security:
+- bearerAuth: []
+tags:
+- name: Comments
+  description: Endpoints for manage comments.
+- name: Recipes difficulty category
+  description: Endpoints for recipes enumerations values
+- name: Recipes types
+  description: Endpoints for recipes types
+- name: Recipes
+  description: Endpoints for recipes
+- name: Report
+  description: Endpoints for reports
+- name: Recipes quantity categories
+  description: Endpoints for recipes enumerations values
+- name: User
+  description: Endpoints for users
+- name: Auth
+  description: Endpoints for authentification
+- name: Ingredient
+  description: Endpoints for manage ingredients.
+paths:
+  /recipes/types/{typeId}:
+    get:
+      tags:
+      - Recipes types
+      summary: Get recipe type by id
+      description: Get recipe type by id. No authentication required.
+      operationId: getRecipeType
+      parameters:
+      - name: typeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecipeType"
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    put:
+      tags:
+      - Recipes types
+      summary: Update recipe type
+      description: Update recipe type. Only administrators can update recipe types.
+      operationId: updateRecipeType
+      parameters:
+      - name: typeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeTypeCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Recipe type updated successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecipeType"
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Unauthorized access. Only administrators can update recipe
+            types.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    delete:
+      tags:
+      - Recipes types
+      summary: Delete recipe type
+      description: Update recipe type. Only administrators can update recipe types.
+      operationId: deleteRecipeType
+      parameters:
+      - name: typeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "204":
+          description: Recipe type deleted successfully.
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Unauthorized access. Only administrators can update recipe
+            types.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+  /comments/{commentId}:
+    get:
+      tags:
+      - Comments
+      summary: Get detailed information of one comments.
+      description: Get detailed information of one comment. MODERATOR and ADMINISTRATOR
+        have access to more elements.
+      operationId: getCommentById
+      parameters:
+      - name: commentId
+        in: path
+        description: The id of the comment.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Comments retrieved successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CommentView"
+              examples:
+                Standard view:
+                  description: Standard view
+                  value:
+                    id: e6f3b10e-b134-4951-ab3b-85fd09336170
+                    content: "J'ai remplacé le vin blanc par du cidre, c'était une\
+                      \ tuerie !"
+                    createdAt: 2025-02-02T08:05:13.174332
+                    owner_id: 6e5f118e-c9d8-4d43-93d2-cb1483a85169
+                    parent_id: 28bcf28a-763e-4b69-a8ad-9ccf081f1b2d
+                    parent_type: RECIPE
+                Administrator/Moderator view:
+                  description: Administrator/Moderator view
+                  value:
+                    id: e6f3b10e-b134-4951-ab3b-85fd09336170
+                    content: "J'ai remplacé le vin blanc par du cidre, c'était une\
+                      \ tuerie !"
+                    createdAt: 2025-02-02T08:05:13.174332
+                    owner_id: 6e5f118e-c9d8-4d43-93d2-cb1483a85169
+                    parent_id: 28bcf28a-763e-4b69-a8ad-9ccf081f1b2d
+                    parent_type: RECIPE
+                    is_deleted: false
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Comment not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    put:
+      tags:
+      - Comments
+      summary: Update a comment.
+      description: Try to update a comment. Only ADMINISTRATOR can use this operation.
+      operationId: putComment
+      parameters:
+      - name: commentId
+        in: path
+        description: The id of the comment.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentPutBody"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Comments updated successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/CommentAdminView"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Comment or user in body not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    delete:
+      tags:
+      - Comments
+      summary: Delete a comment.
+      description: Try to delete a comment. Default is soft delete (logical delete).
+        Only ADMINISTRATOR can perform hard delete. A MODERATOR can soft delete any
+        comment. STANDARD user can only soft delete their comments.
+      operationId: deleteComment
+      parameters:
+      - name: commentId
+        in: path
+        description: The id of the comment.
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: hardDelete
+        in: query
+        description: Set true to perform hard delete.
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "204":
+          description: No content. Comment is deleted
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Comment not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /reports:
+    get:
+      tags:
+      - Report
+      summary: Get all reports
+      description: Get all reports with optional filters
+      operationId: getAll
+      parameters:
+      - name: resolved
+        in: query
+        required: false
+        schema:
+          type: boolean
+      - name: type
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - HATE_SPEECH
+          - INAPPROPRIATE_CONTENT
+          - SPAM
+          - MISINFORMATION
+          - COPYRIGHT_VIOLATION
+          - OFF_TOPIC
+          - HARASSMENT
+          - LOW_QUALITY
+          - TECHNICAL_ISSUE
+          - OTHER
+      - name: targetId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: reporterId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "type,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Reports found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReportViewDTO"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+    post:
+      tags:
+      - Report
+      summary: Create a report
+      description: Create a report
+      operationId: createReport
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "201":
+          description: Report created
+          content:
+            application/json:
+              schema:
+                type: string
+                format: uri
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+  /recipes/{recipeId}/reports:
+    get:
+      tags:
+      - Recipes
+      summary: Get all reports for a recipe
+      description: Get all reports for a recipe. Authentication required. ADMINISTRATOR
+        or Moderator role required.
+      operationId: getAllReportsOnRecipe
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "createdDate,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReportViewDTO"
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    post:
+      tags:
+      - Recipes
+      summary: Create a new report for a recipe
+      description: Create a new report for a recipe. Authentication required.
+      operationId: reportRecipe
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportOnTargetCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "201":
+          description: Success
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /recipes/{recipeId}/like:
+    post:
+      tags:
+      - Recipes
+      summary: Like a recipe
+      description: Like a recipe. Authentication required.
+      operationId: likeRecipe
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "201":
+          description: Success
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    delete:
+      tags:
+      - Recipes
+      summary: Delete a like for a recipe
+      description: Delete a like for a recipe. Authentication required.
+      operationId: unlikeRecipe
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "204":
+          description: Success
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe like not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /recipes/{recipeId}/comments:
+    get:
+      tags:
+      - Recipes
+      summary: Get all comments for a recipe
+      description: Get all comments for a recipe. Authentication required. ADMINISTRATOR
+        role required to see all comments fields.
+      operationId: getAllCommentsOnRecipe
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "createdAt,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageCommentView"
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    post:
+      tags:
+      - Recipes
+      summary: Post a comment for a recipe
+      description: Post a comment for a recipe. Authentication required.
+      operationId: addCommentOnRecipe
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "201":
+          description: Success
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /recipes/types:
+    get:
+      tags:
+      - Recipes types
+      summary: Get all recipe types
+      description: Get all recipe types. No authentication required.
+      operationId: getAllRecipeType
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/RecipeType"
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+    post:
+      tags:
+      - Recipes types
+      summary: Create recipe type
+      description: Create recipe type. Only administrators can create recipe types.
+      operationId: createRecipeType
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/RecipeTypeCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Recipe type created successfully.
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Unauthorized access. Only administrators can create recipe
+            types.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+  /recipes/steps/{stepId}/reports:
+    post:
+      tags:
+      - Recipes
+      summary: Create a new report for a recipe step
+      description: Create a new report for a recipe step. Authentication required.
+      operationId: reportRecipeStep
+      parameters:
+      - name: stepId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportOnTargetCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "201":
+          description: Success
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe step not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /recipes/steps/{recipeStepId}/comments:
+    get:
+      tags:
+      - Recipes
+      summary: Get all comments for a recipe step
+      description: Get all comments for a recipe step. Authentication required. ADMINISTRATOR
+        role required to see all comments fields.
+      operationId: getAllCommentsOnRecipeStep
+      parameters:
+      - name: recipeStepId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "createdAt,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageCommentView"
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe step not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    post:
+      tags:
+      - Recipes
+      summary: Post a comment for a recipe step
+      description: Post a comment for a recipe step. Authentication required.
+      operationId: addCommentOnRecipeStep
+      parameters:
+      - name: recipeStepId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CommentCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "201":
+          description: Success
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe step not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /ingredients:
+    get:
+      tags:
+      - Ingredient
+      summary: Get all ingredient
+      description: |-
+        Get all the ingredients available in database. Result is paginated and many filters are available. Merge filter 'typeId' and 'typeName' is not allowed. Only Administrators can filter on visibility and deletedStatus. For other, ingredients that is not your own and are private is invisible. Ingredients can be soft deleted for not loose recipe if a ingredient is employed in them.
+        Result field depends of user rôle.
+      operationId: getAllIngredients
+      parameters:
+      - name: name
+        in: query
+        description: Allow to filter by name.
+        required: false
+        schema:
+          type: string
+      - name: typeName
+        in: query
+        description: Allow to filer by typeName. Incompatible with typeId
+        required: false
+        schema:
+          type: string
+      - name: typeId
+        in: query
+        description: Allow to filter by typeId. Incompatible with typeName
+        required: false
+        schema:
+          type: integer
+          format: int64
+      - name: visibility
+        in: query
+        description: Allow to filter by visibility status. Only for ADMINISTRATOR.
+        required: false
+        schema:
+          type: string
+          default: PUBLIC
+          enum:
+          - PUBLIC
+          - PRIVATE
+          - ALL
+      - name: ownership
+        in: query
+        description: Allow to filter by ownership status.
+        required: false
+        schema:
+          type: string
+          default: ALL
+          enum:
+          - CREATED
+          - DEFAULT
+          - ALL
+      - name: deletedStatus
+        in: query
+        description: Allow to filter by deleted status.Only for ADMINISTRATOR.
+        required: false
+        schema:
+          type: string
+          default: NOT_DELETED
+          enum:
+          - DELETED
+          - NOT_DELETED
+          - ALL
+      - name: ownerId
+        in: query
+        description: Allow to filter by owner.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "name,ASC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Ingredients retrieved successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageIngredientView"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+    post:
+      tags:
+      - Ingredient
+      summary: Create new ingredient
+      description: |-
+        Create new ingredient. Authentication is needed. Require a multipart form value, with on requested json for data and a Multipart file for a file upload.  OpenAPI don't allow schema for multipart. Schema : String name;\n" +
+                            "    Long type;\n" +
+                            "    @Length(max = 5000)\n" +
+                            "    String description;\n" +
+                            "    Boolean isPublic;\n" +
+                            "    UUID ownerId;",
+      operationId: createIngredient
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - ingredient
+              type: object
+              properties:
+                ingredient:
+                  $ref: "#/components/schemas/IngredientCreate"
+                file:
+                  type: string
+                  description: Not required. Multipart file for upload an image of
+                    new ingredient.
+                  format: binary
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Ingredient created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/IngredientView"
+              examples:
+                Standard view:
+                  description: Standard view
+                  value:
+                    id: 54
+                    name: Olive taggiasca
+                    type:
+                      id: 7
+                      name: "Spices, oils and condiments"
+                    description: "Spécialité italienne, l’olive taggiasca est une\
+                      \ olive typique de la Ligurie, une région du nord de l’Italie\
+                      \ et frontalière avec la France. Cette variété de petite taille\
+                      \ est réputée pour son parfum savoureux. Elle est considéré\
+                      e comme une olive de grande qualité et permet de confectionner\
+                      \ une huile absolument délicieuse."
+                    isPublic: true
+                    ownerId: null
+                    imageUrl: /images/ingredient/fotoliaok.jpg
+                Administrator view:
+                  description: Administrator view
+                  value:
+                    id: 54
+                    name: Olive taggiasca
+                    type:
+                      id: 7
+                      name: "Spices, oils and condiments"
+                    description: "Spécialité italienne, l’olive taggiasca est une\
+                      \ olive typique de la Ligurie, une région du nord de l’Italie\
+                      \ et frontalière avec la France. Cette variété de petite taille\
+                      \ est réputée pour son parfum savoureux. Elle est considéré\
+                      e comme une olive de grande qualité et permet de confectionner\
+                      \ une huile absolument délicieuse."
+                    isPublic: true
+                    isDeleted: false
+                    ownerId: null
+                    imageUrl: /images/ingredient/fotoliaok.jpg
+                    createdDate: 2025-02-02
+                    updatedDate: null
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: "Ingredient, ingredient type or owner user not found."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /auth/signup:
+    post:
+      tags:
+      - Auth
+      summary: User Registration
+      description: "Registers a new user with the provided credentials. If the username\
+        \ is already taken, an exception is thrown."
+      operationId: registerUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationRequestCreateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/User"
+  /auth/sign-in:
+    post:
+      tags:
+      - Auth
+      summary: User Sign-In
+      description: "Authenticates the user using email or pseudo and password. If\
+        \ successful, returns a JWT access token; otherwise, throws an exception indicating\
+        \ incorrect credentials."
+      operationId: authenticateUser
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/AuthenticationRequestDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: OK
+          content:
+            '*/*':
+              schema:
+                type: object
+                additionalProperties:
+                  type: string
+  /users/{userId}:
+    get:
+      tags:
+      - User
+      summary: Retrieve a user by their id.
+      description: "This endpoint allows to fetch user details by their unique ID.\
+        \ Administrators receive detailed user information, authenticated users can\
+        \ access their own detailed profile, while public information is returned\
+        \ for others."
+      operationId: getUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: User details retrieved successfully.
+          content:
+            application/json:
+              schema:
+                description: "The response structure varies based on the user's role.\
+                  \ Administrators receive additional fields (e.g., permissions)."
+                oneOf:
+                - $ref: "#/components/schemas/AdminUserView"
+                - $ref: "#/components/schemas/PublicUserView"
+                - $ref: "#/components/schemas/SelfUserView"
+              examples:
+                Standard view:
+                  description: User view returned if user is not administrator and
+                    the requested user is not itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Self view:
+                  description: User view returned if user is not administrator and
+                    the requested user is itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Admin view:
+                  description: User view returned if user is administrator.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    roles:
+                    - ROLE_STANDARD
+                    - ROLE_ADMINISTRATOR
+                    createdDate: 2025-01-28
+                    updatedDate: 2027-01-28
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: User not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    delete:
+      tags:
+      - User
+      summary: Delete an user.
+      description: Resricted to ADMINISTRATOR. Delete an user in the application.
+      operationId: deleteUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "204":
+          description: Successfully deleted user.
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: User not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    patch:
+      tags:
+      - User
+      summary: Update an user.
+      description: "Allow to patch an user. Only ADMINISTRATOR or self user can perform\
+        \ this action. In case of self update, only a substract of fields are allowed\
+        \ to be pached."
+      operationId: updateUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Successfully updated user.
+          content:
+            '*/*':
+              schema:
+                oneOf:
+                - $ref: "#/components/schemas/AdminUserView"
+                - $ref: "#/components/schemas/PublicUserView"
+                - $ref: "#/components/schemas/SelfUserView"
+              examples:
+                Self view:
+                  description: User view returned if user is not administrator and
+                    the requested user is itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Admin view:
+                  description: User view returned if user is administrator.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    roles:
+                    - ROLE_STANDARD
+                    - ROLE_ADMINISTRATOR
+                    createdDate: 2025-01-28
+                    updatedDate: 2027-01-28
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "409":
+          description: Conflict
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 409
+                error: Conflict
+                message: pseudo already used.
+                path: /api/v1/url/of/resource
+  /reports/{reportId}:
+    get:
+      tags:
+      - Report
+      summary: Get report by ID
+      description: Get a report by its ID
+      operationId: getById
+      parameters:
+      - name: reportId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Report found
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportViewDTO"
+              example:
+                id: fa153539-c875-4e92-9b99-2680c6fd0fb2
+                message: "\"Contenu inapproprié, ne devrait pas être publié.\""
+                type: LOW_QUALITY
+                reporterId: 784935ae-2bea-41cc-a44a-081c7b448eb9
+                targetId: baccfaab-7067-42ae-b525-c236426c43e8
+                resolved: false
+                targetType: RECIPE
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Report not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    delete:
+      tags:
+      - Report
+      summary: Delete a report
+      description: Delete a report by ID. Only MODERATOR roles are allowed.
+      operationId: deleteReport
+      parameters:
+      - name: reportId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "204":
+          description: Report deleted
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Report not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    patch:
+      tags:
+      - Report
+      summary: Update a report
+      description: "Update a report by ID, via PATCH request. Only MODERATOR and ADMINISTRATOR\
+        \ roles are allowed."
+      operationId: updateReport
+      parameters:
+      - name: reportId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ReportUpdateDto"
+        required: true
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Report updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ReportViewDTO"
+              example:
+                id: fa153539-c875-4e92-9b99-2680c6fd0fb2
+                message: "\"Contenu inapproprié, ne devrait pas être publié.\""
+                type: LOW_QUALITY
+                reporterId: 784935ae-2bea-41cc-a44a-081c7b448eb9
+                targetId: baccfaab-7067-42ae-b525-c236426c43e8
+                resolved: false
+                targetType: RECIPE
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Report not found
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /ingredients/{ingredientId}:
+    get:
+      tags:
+      - Ingredient
+      summary: "Get detailed information of one ingredient. ADMINISTRATOR can see\
+        \ more fields, like deletedStatus."
+      description: Get detailed information of
+      operationId: getIngredient
+      parameters:
+      - name: ingredientId
+        in: path
+        description: The id of ingredient.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Ingredient retrieved successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/IngredientView"
+              examples:
+                Standard view:
+                  description: Standard view
+                  value:
+                    id: 54
+                    name: Olive taggiasca
+                    type:
+                      id: 7
+                      name: "Spices, oils and condiments"
+                    description: "Spécialité italienne, l’olive taggiasca est une\
+                      \ olive typique de la Ligurie, une région du nord de l’Italie\
+                      \ et frontalière avec la France. Cette variété de petite taille\
+                      \ est réputée pour son parfum savoureux. Elle est considéré\
+                      e comme une olive de grande qualité et permet de confectionner\
+                      \ une huile absolument délicieuse."
+                    isPublic: true
+                    ownerId: null
+                    imageUrl: /images/ingredient/fotoliaok.jpg
+                Administrator view:
+                  description: Administrator view
+                  value:
+                    id: 54
+                    name: Olive taggiasca
+                    type:
+                      id: 7
+                      name: "Spices, oils and condiments"
+                    description: "Spécialité italienne, l’olive taggiasca est une\
+                      \ olive typique de la Ligurie, une région du nord de l’Italie\
+                      \ et frontalière avec la France. Cette variété de petite taille\
+                      \ est réputée pour son parfum savoureux. Elle est considéré\
+                      e comme une olive de grande qualité et permet de confectionner\
+                      \ une huile absolument délicieuse."
+                    isPublic: true
+                    isDeleted: false
+                    ownerId: null
+                    imageUrl: /images/ingredient/fotoliaok.jpg
+                    createdDate: 2025-02-02
+                    updatedDate: null
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Ingredient not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    delete:
+      tags:
+      - Ingredient
+      summary: Delete an ingredient.
+      description: Require to be authenticated. Only ADMINISTRATOR can perform hardDelete.
+        Other can soft delete only their own ingredients.
+      operationId: deleteIngredient
+      parameters:
+      - name: ingredientId
+        in: path
+        required: true
+        schema:
+          type: integer
+          format: int64
+      - name: hardDelete
+        in: query
+        required: false
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "204":
+          description: No content. Ingredient is deleted
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Ingredient not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+    patch:
+      tags:
+      - Ingredient
+      summary: Update an ingredient.
+      description: |-
+        Perform a patch in ingredient. If a file value is set but null, old image is erased. If image is not present, old image will no be changed. OpenAPI don't allow schema for multipart. Schema : String name;
+            Long type;
+            @Length(max = 5000)
+            String description;
+            Boolean isPublic;
+            UUID ownerId;
+      operationId: patchIngredient
+      parameters:
+      - name: ingredientId
+        in: path
+        description: The id of ingredient.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              required:
+              - ingredient
+              type: object
+              properties:
+                ingredient:
+                  $ref: "#/components/schemas/IngredientPatchDto"
+                file:
+                  type: string
+                  description: Not required. Multipart file for upload an image of
+                    new ingredient.
+                  format: binary
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Ingredient created successfully
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/IngredientView"
+              examples:
+                Standard view:
+                  description: Standard view
+                  value:
+                    id: 54
+                    name: Olive taggiasca
+                    type:
+                      id: 7
+                      name: "Spices, oils and condiments"
+                    description: "Spécialité italienne, l’olive taggiasca est une\
+                      \ olive typique de la Ligurie, une région du nord de l’Italie\
+                      \ et frontalière avec la France. Cette variété de petite taille\
+                      \ est réputée pour son parfum savoureux. Elle est considéré\
+                      e comme une olive de grande qualité et permet de confectionner\
+                      \ une huile absolument délicieuse."
+                    isPublic: true
+                    ownerId: null
+                    imageUrl: /images/ingredient/fotoliaok.jpg
+                Administrator view:
+                  description: Administrator view
+                  value:
+                    id: 54
+                    name: Olive taggiasca
+                    type:
+                      id: 7
+                      name: "Spices, oils and condiments"
+                    description: "Spécialité italienne, l’olive taggiasca est une\
+                      \ olive typique de la Ligurie, une région du nord de l’Italie\
+                      \ et frontalière avec la France. Cette variété de petite taille\
+                      \ est réputée pour son parfum savoureux. Elle est considéré\
+                      e comme une olive de grande qualité et permet de confectionner\
+                      \ une huile absolument délicieuse."
+                    isPublic: true
+                    isDeleted: false
+                    ownerId: null
+                    imageUrl: /images/ingredient/fotoliaok.jpg
+                    createdDate: 2025-02-02
+                    updatedDate: null
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: "Ingredient, ingredient type or owner user not found."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /users:
+    get:
+      tags:
+      - User
+      summary: Get all users.
+      description: "Allow to get all users, paginated. Admin and moderators have more\
+        \ properties. Have many filter and they can be merged."
+      operationId: getAllUsers
+      parameters:
+      - name: role
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: lastName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: firstName
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: pseudo
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: email
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "pseudo,ASC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Users successfully retrieved.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+              examples:
+                Standard view:
+                  description: User view returned if user is not administrator and
+                    the requested user is not itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Self view:
+                  description: User view returned if user is not administrator and
+                    the requested user is itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Admin view:
+                  description: User view returned if user is administrator.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    roles:
+                    - ROLE_STANDARD
+                    - ROLE_ADMINISTRATOR
+                    createdDate: 2025-01-28
+                    updatedDate: 2027-01-28
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "404":
+          description: User not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /users/{userId}/reports:
+    get:
+      tags:
+      - User
+      summary: Get reports related to an user.
+      description: Get reports related to an user. Restricted to MODERATOR and ADMINISTRATOR
+      operationId: getReportsForUser
+      parameters:
+      - name: userId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Successfully receives list  of reports related to the user
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReportViewDTO"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: User not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /users/me:
+    get:
+      tags:
+      - User
+      summary: Get self detail
+      description: Allow to directly retries current user information's
+      operationId: getSelf
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Users successfully retrieved.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+              examples:
+                Standard view:
+                  description: User view returned if user is not administrator and
+                    the requested user is not itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Self view:
+                  description: User view returned if user is not administrator and
+                    the requested user is itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Admin view:
+                  description: User view returned if user is administrator.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    roles:
+                    - ROLE_STANDARD
+                    - ROLE_ADMINISTRATOR
+                    createdDate: 2025-01-28
+                    updatedDate: 2027-01-28
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+  /users/me/recipes/likes:
+    get:
+      tags:
+      - User
+      summary: Retrieves self liked recipes.
+      description: Allow an user o retrieves all liked recipes.
+      operationId: getAllLikedRecipes
+      parameters:
+      - name: pageable
+        in: query
+        required: true
+        schema:
+          $ref: "#/components/schemas/Pageable"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Successfully get liked recipes.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/Page"
+              examples:
+                Standard view:
+                  description: User view returned if user is not administrator and
+                    the requested user is not itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Self view:
+                  description: User view returned if user is not administrator and
+                    the requested user is itself.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    createdDate: 2025-01-28
+                Admin view:
+                  description: User view returned if user is administrator.
+                  value:
+                    id: 3fa85f64-5717-4562-b3fc-2c963f66afa6
+                    firstName: John
+                    lastName: Doe
+                    email: jdoe@example.com
+                    pseudo: johnnyD
+                    roles:
+                    - ROLE_STANDARD
+                    - ROLE_ADMINISTRATOR
+                    createdDate: 2025-01-28
+                    updatedDate: 2027-01-28
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+  /reports/types:
+    get:
+      tags:
+      - Report
+      summary: Get all report types
+      description: Get all report types. Authentication not required.
+      operationId: getReportTypes
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Report types found
+          content:
+            application/json:
+              schema:
+                type: string
+              example: |
+                ["HATE_SPEECH",
+                 "INAPPROPRIATE_CONTENT",
+                 "SPAM",
+                 "MISINFORMATION",
+                 "COPYRIGHT_VIOLATION"
+                 ...
+                ]
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+  /recipes:
+    get:
+      tags:
+      - Recipes
+      summary: Get all recipes
+      description: Get all recipes. No authentication required. Many filter are available.
+        ADMINISTRATOR role required to see all recipe fields and filter on visibility
+        and status.
+      operationId: getAllRecipes
+      parameters:
+      - name: name
+        in: query
+        required: false
+        schema:
+          type: string
+      - name: maxTotalTime
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: servingSize
+        in: query
+        required: false
+        schema:
+          type: integer
+          format: int32
+      - name: difficulty
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VERY_EASY
+          - EASY
+          - MEDIUM
+          - HARD
+          - VERY_HARD
+      - name: maxDifficulty
+        in: query
+        required: false
+        schema:
+          type: string
+          enum:
+          - VERY_EASY
+          - EASY
+          - MEDIUM
+          - HARD
+          - VERY_HARD
+      - name: typeId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: withIngredient
+        in: query
+        required: false
+        schema:
+          maxItems: 5
+          minItems: 0
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: withIngredientType
+        in: query
+        required: false
+        schema:
+          maxItems: 5
+          minItems: 0
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: withoutIngredientType
+        in: query
+        required: false
+        schema:
+          maxItems: 5
+          minItems: 0
+          type: array
+          items:
+            type: integer
+            format: int64
+      - name: withTags
+        in: query
+        required: false
+        schema:
+          maxItems: 5
+          minItems: 0
+          type: array
+          items:
+            type: string
+      - name: ownerId
+        in: query
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: visibility
+        in: query
+        required: false
+        schema:
+          type: string
+          default: PUBLIC
+          enum:
+          - PUBLIC
+          - PRIVATE
+          - ALL
+      - name: deletedStatus
+        in: query
+        required: false
+        schema:
+          type: string
+          default: NOT_DELETED
+          enum:
+          - DELETED
+          - NOT_DELETED
+          - ALL
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "likeCount,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageRecipeView"
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+  /recipes/{recipeId}:
+    get:
+      tags:
+      - Recipes
+      summary: Get recipe by id
+      description: "Get recipe by id. No authentication required. ADMINISTRATOR role\
+        \ required to get all recipes, and see all recipe fields."
+      operationId: getRecipeById
+      parameters:
+      - name: recipeId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/RecipeView"
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /recipes/steps/{recipeStepId}/reports:
+    get:
+      tags:
+      - Recipes
+      summary: Get all reports for a recipe step
+      description: Get all reports for a recipe step. Authentication required. ADMINISTRATOR
+        or Moderator role required.
+      operationId: getAllReportsOnRecipeStep
+      parameters:
+      - name: recipeStepId
+        in: path
+        required: true
+        schema:
+          type: string
+          format: uuid
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "createdDate,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Success
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageReportViewDTO"
+        "400":
+          description: "Bad request. Invalid filter parameters, sort or body."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access. Invalid authentication token.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access. User does not have the required role.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+        "404":
+          description: Recipe step not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /recipes/quantities/types:
+    get:
+      tags:
+      - Recipes quantity categories
+      summary: Get all categories of quantity units
+      description: Get all categories of quantity units
+      operationId: getAllQuantityTypes
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Quantity units retrieved successfully.
+          content:
+            '*/*':
+              example: |-
+                [
+                  "G",
+                  "MG",
+                  "LITER",
+                  "BOTTLE",
+                  "PINCH"
+                  "..."
+                ]
+  /recipes/quantities/states:
+    get:
+      tags:
+      - Recipes quantity categories
+      summary: Get all categories of quantity states
+      description: Get all categories of quantity states
+      operationId: getAllQuantitySates
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Quantity states retrieved successfully.
+          content:
+            '*/*':
+              example: |-
+                [
+                  "WHOLE",
+                  "CHOPPED",
+                  "DICED",
+                  "MINCED",
+                  "GRATED"
+                  "..."
+                ]
+  /recipes/difficulties:
+    get:
+      tags:
+      - Recipes difficulty category
+      summary: Get all categories of difficulties
+      description: Get all categories of difficulties
+      operationId: getAllDifficultiesTypes
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Categories retrieved successfully.
+          content:
+            '*/*':
+              example:
+              - VERY_EASY
+              - EASY
+              - MEDIUM
+              - HARD
+              - VERY_HARD
+  /ingredients/types:
+    get:
+      tags:
+      - Ingredient
+      summary: Get all types of ingredients.
+      description: Get all types of ingredients. Results is paginated. No need to
+        be authenticated. You can filter by name.
+      operationId: getAllTypes
+      parameters:
+      - name: name
+        in: query
+        description: Allow to filter by name.
+        required: false
+        schema:
+          type: string
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "name,ASC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Ingredients type retrieved successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageIngredientTypeView"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+  /ingredients/types/{typeId}:
+    get:
+      tags:
+      - Ingredient
+      summary: Get ingredient types by id.
+      description: "Get details of an ingredients type, by id. No need to be authenticated."
+      operationId: getById_1
+      parameters:
+      - name: typeId
+        in: path
+        description: The id of ingredient type.
+        required: true
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Ingredients type retrieved successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/IngredientTypeView"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized. Wrong credentials.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "404":
+          description: Ingredient type not found.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T09:16:58.066845903+01:00
+                status: 404
+                error: Not Found
+                message: "Entiy not found by id: 827ea490-e971-422f-8c03-f84dc1c64ff0"
+                path: /api/v1/url/of/resource
+  /comments:
+    get:
+      tags:
+      - Comments
+      summary: Get all comments.
+      description: Restricted to MODERATORS and ADMINISTRATORS. Allow to get all comments.
+        Results is paginated and you can filter by many parameters. You can use multiple
+        filters.
+      operationId: getAllComment
+      parameters:
+      - name: ownerId
+        in: query
+        description: Filter on the writer of comment.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: parentId
+        in: query
+        description: Filter on the id of recipe or recipe step.
+        required: false
+        schema:
+          type: string
+          format: uuid
+      - name: deletedStatus
+        in: query
+        description: A filter allow to choose the deleted status of the comment.
+        required: false
+        schema:
+          type: string
+          default: NOT_DELETED
+          enum:
+          - DELETED
+          - NOT_DELETED
+          - ALL
+      - name: page
+        in: query
+        description: Zero-based page index (0..N)
+        required: false
+        schema:
+          minimum: 0
+          type: integer
+          default: 0
+      - name: size
+        in: query
+        description: The size of the page to be returned
+        required: false
+        schema:
+          minimum: 1
+          type: integer
+          default: 10
+      - name: sort
+        in: query
+        description: "Sorting criteria in the format: property,(asc|desc). Default\
+          \ sort order is ascending. Multiple sort criteria are supported."
+        required: false
+        schema:
+          type: array
+          items:
+            type: string
+          default:
+          - "createdAt,DESC"
+      responses:
+        "500":
+          description: Un unexpected error happened.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:45:43.942215133+01:00
+                status: 500
+                error: Internal Server Error
+                message: You cannot divide by zero.
+                path: /api/to/resource
+        "200":
+          description: Comments retrieved successfully.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/PageCommentAdminView"
+        "400":
+          description: "Errors in validation of body, parameters, or wrong value."
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:53:31.199655847+01:00
+                status: 400
+                error: Bad Request
+                message: Invalid or malformed JSON. Check that your request body matches
+                  the expected format.
+                path: /api/v1/url/of/resource
+        "401":
+          description: Unauthorized access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T08:23:57.433451114+01:00
+                status: 401
+                error: Unauthorized
+                message: Authenticated user don't exist
+                path: /api/v1/url/of/resource
+        "403":
+          description: Forbidden access.
+          content:
+            '*/*':
+              schema:
+                $ref: "#/components/schemas/ErrorResponse"
+              example:
+                timestamp: 2025-02-02T07:27:36.607+00:00
+                status: 403
+                error: Forbidden
+                message: Forbidden
+                path: /api/v1/url/of/resource
+components:
+  schemas:
+    ErrorResponse:
+      type: object
+      properties:
+        timestamp:
+          type: string
+          format: date-time
+        status:
+          type: integer
+          format: int32
+        error:
+          type: string
+        message:
+          type: string
+        path:
+          type: string
+        errors:
+          type: object
+          additionalProperties:
+            type: string
+      description: Generic error response payload
+    RecipeTypeCreateDto:
+      required:
+      - name
+      type: object
+      properties:
+        name:
+          type: string
+      description: Schema needed to create or update a recipe type
+    RecipeType:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+    CommentPutBody:
+      required:
+      - content
+      - is_deleted
+      - owner_id
+      - parent_id
+      - parent_type
+      type: object
+      properties:
+        content:
+          type: string
+        owner_id:
+          type: string
+          format: uuid
+        parent_id:
+          type: string
+          format: uuid
+        parent_type:
+          type: string
+          enum:
+          - RECIPE
+          - RECIPE_STEP
+        is_deleted:
+          type: boolean
+    CommentAdminView:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        owner_id:
+          type: string
+          format: uuid
+        parent_id:
+          type: string
+          format: uuid
+        parent_type:
+          type: string
+        is_deleted:
+          type: boolean
+        reportCount:
+          type: integer
+          format: int32
+    ReportCreateDto:
+      required:
+      - targetId
+      - type
+      type: object
+      properties:
+        targetId:
+          type: string
+          format: uuid
+        message:
+          type: string
+        type:
+          type: string
+          enum:
+          - HATE_SPEECH
+          - INAPPROPRIATE_CONTENT
+          - SPAM
+          - MISINFORMATION
+          - COPYRIGHT_VIOLATION
+          - OFF_TOPIC
+          - HARASSMENT
+          - LOW_QUALITY
+          - TECHNICAL_ISSUE
+          - OTHER
+    ReportOnTargetCreateDto:
+      required:
+      - type
+      type: object
+      properties:
+        targetId:
+          type: string
+          format: uuid
+        message:
+          type: string
+        type:
+          type: string
+          enum:
+          - HATE_SPEECH
+          - INAPPROPRIATE_CONTENT
+          - SPAM
+          - MISINFORMATION
+          - COPYRIGHT_VIOLATION
+          - OFF_TOPIC
+          - HARASSMENT
+          - LOW_QUALITY
+          - TECHNICAL_ISSUE
+          - OTHER
+    CommentCreateDto:
+      required:
+      - content
+      type: object
+      properties:
+        content:
+          type: string
+    IngredientAdminView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        type:
+          $ref: "#/components/schemas/IngredientTypeView"
+        description:
+          type: string
+        isPublic:
+          type: boolean
+        isDeleted:
+          type: boolean
+        ownerId:
+          type: string
+          format: uuid
+        imageUrl:
+          type: string
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+    IngredientPublicView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        type:
+          $ref: "#/components/schemas/IngredientTypeView"
+        description:
+          type: string
+        isPublic:
+          type: boolean
+        ownerId:
+          type: string
+          format: uuid
+        imageUrl:
+          type: string
+    IngredientTypeView:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        imageUrl:
+          type: string
+    IngredientView:
+      type: object
+      properties:
+        public:
+          type: boolean
+      oneOf:
+      - $ref: "#/components/schemas/IngredientPublicView"
+      - $ref: "#/components/schemas/IngredientAdminView"
+    IngredientCreate:
+      required:
+      - isPublic
+      - name
+      - typeId
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        typeId:
+          type: integer
+          format: int64
+        isPublic:
+          type: boolean
+      description: Json part needed to create an ingredient.
+    AuthenticationRequestCreateDto:
+      required:
+      - email
+      - firstName
+      - lastName
+      - password
+      - pseudo
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        pseudo:
+          type: string
+        password:
+          type: string
+    Comment:
+      type: object
+      properties:
+        owner:
+          $ref: "#/components/schemas/User"
+        isPublic:
+          type: boolean
+        isDeleted:
+          type: boolean
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        parent:
+          $ref: "#/components/schemas/Commentable"
+        public:
+          type: boolean
+          writeOnly: true
+        deleted:
+          type: boolean
+          writeOnly: true
+    Commentable:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+    Ingredient:
+      type: object
+      properties:
+        owner:
+          $ref: "#/components/schemas/User"
+        isPublic:
+          type: boolean
+        isDeleted:
+          type: boolean
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        type:
+          $ref: "#/components/schemas/IngredientType"
+        description:
+          type: string
+        image_file_name:
+          type: string
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+        public:
+          type: boolean
+          writeOnly: true
+        deleted:
+          type: boolean
+          writeOnly: true
+    IngredientType:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+        description:
+          type: string
+        image_file_name:
+          type: string
+        image_url:
+          type: string
+    Recipe:
+      required:
+      - createdDate
+      - language
+      - title
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+        title:
+          type: string
+        description:
+          type: string
+        preparation_time:
+          type: integer
+          format: int32
+        cooking_time:
+          type: integer
+          format: int32
+        servings_size:
+          type: integer
+          format: int32
+        difficulty:
+          type: string
+          enum:
+          - VERY_EASY
+          - EASY
+          - MEDIUM
+          - HARD
+          - VERY_HARD
+        type:
+          $ref: "#/components/schemas/RecipeType"
+        recipeIngredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredient"
+        recipe_steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeStep"
+        tags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        author_note:
+          type: string
+        image_file_name:
+          type: string
+        owner:
+          $ref: "#/components/schemas/User"
+        language:
+          type: string
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+        likes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeLike"
+        likeCount:
+          type: integer
+          format: int32
+        public:
+          type: boolean
+        deleted:
+          type: boolean
+    RecipeIngredient:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        recipe:
+          $ref: "#/components/schemas/Recipe"
+        ingredient:
+          $ref: "#/components/schemas/Ingredient"
+        quantity:
+          type: number
+          format: double
+        required:
+          type: boolean
+        quantity_type:
+          type: string
+          enum:
+          - MG
+          - G
+          - KG
+          - LB
+          - OZ
+          - ML
+          - CL
+          - L
+          - CUP
+          - TBSP
+          - TSP
+          - FL_OZ
+          - UNIT
+          - SLICE
+          - PACK
+          - CAN
+          - BOTTLE
+          - PINCH
+          - DASH
+          - HEART
+          - CLOVE
+          - LEAF
+          - NONE
+        ingredient_state:
+          type: string
+          enum:
+          - WHOLE
+          - CHOPPED
+          - DICED
+          - MINCED
+          - GRATED
+          - SHREDDED
+          - GROUND
+          - CRUSHED
+          - SLICED
+          - FLAKED
+          - DRIED
+          - POWDERED
+          - RIBBONED
+          - PEELED
+          - LIQUID
+          - CRUSY
+          - MASHED
+          - FRESH
+          - MELTED
+          - FROZEN
+        note:
+          type: string
+    RecipeLike:
+      type: object
+      properties:
+        id:
+          $ref: "#/components/schemas/RecipeLikeId"
+        recipe:
+          $ref: "#/components/schemas/Recipe"
+        user:
+          $ref: "#/components/schemas/User"
+        likedAt:
+          type: string
+          format: date-time
+    RecipeLikeId:
+      type: object
+      properties:
+        recipeId:
+          type: string
+          format: uuid
+        userId:
+          type: string
+          format: uuid
+    RecipeStep:
+      required:
+      - step_description
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        comments:
+          type: array
+          items:
+            $ref: "#/components/schemas/Comment"
+        step_number:
+          type: integer
+          format: int32
+        step_description:
+          type: string
+    User:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        pseudo:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - ADMINISTRATOR
+            - MODERATOR
+            - STANDARD
+            - BANNED
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+        recipeLikesLikes:
+          uniqueItems: true
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeLike"
+    AuthenticationRequestDto:
+      required:
+      - password
+      - username
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    AdminUserView:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        pseudo:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - ADMINISTRATOR
+            - MODERATOR
+            - STANDARD
+            - BANNED
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+      description: Detailed user data for administrative purposes
+    PublicUserView:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        pseudo:
+          type: string
+        createdDate:
+          type: string
+          format: date
+      description: Public user data with minimal details
+    SelfUserView:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        pseudo:
+          type: string
+        createdDate:
+          type: string
+          format: date
+      description: Personal user data including private details
+    UpdateDto:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        pseudo:
+          type: string
+        roles:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+            enum:
+            - ADMINISTRATOR
+            - MODERATOR
+            - STANDARD
+            - BANNED
+    ReportViewDTO:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        message:
+          type: string
+        type:
+          type: string
+          enum:
+          - HATE_SPEECH
+          - INAPPROPRIATE_CONTENT
+          - SPAM
+          - MISINFORMATION
+          - COPYRIGHT_VIOLATION
+          - OFF_TOPIC
+          - HARASSMENT
+          - LOW_QUALITY
+          - TECHNICAL_ISSUE
+          - OTHER
+        reporterId:
+          type: string
+          format: uuid
+        targetId:
+          type: string
+          format: uuid
+        resolved:
+          type: boolean
+        targetType:
+          type: string
+    ReportUpdateDto:
+      type: object
+      properties:
+        message:
+          type: string
+        type:
+          type: string
+          enum:
+          - HATE_SPEECH
+          - INAPPROPRIATE_CONTENT
+          - SPAM
+          - MISINFORMATION
+          - COPYRIGHT_VIOLATION
+          - OFF_TOPIC
+          - HARASSMENT
+          - LOW_QUALITY
+          - TECHNICAL_ISSUE
+          - OTHER
+        reporterId:
+          type: string
+          format: uuid
+        targetId:
+          type: string
+          format: uuid
+        resolved:
+          type: boolean
+        messageProvided:
+          type: boolean
+        targetIdProvided:
+          type: boolean
+        reporterIdProvided:
+          type: boolean
+        typeProvided:
+          type: boolean
+        resolvedProvided:
+          type: boolean
+    IngredientPatchDto:
+      type: object
+      properties:
+        name:
+          type: string
+        type:
+          type: integer
+          format: int64
+        description:
+          type: string
+        ownerId:
+          type: string
+          format: uuid
+        typeProvided:
+          type: boolean
+        public:
+          type: boolean
+        ownerIdProvided:
+          type: boolean
+        nameProvided:
+          type: boolean
+        descriptionProvided:
+          type: boolean
+        publicProvided:
+          type: boolean
+      description: Json part needed to update an ingredient.
+    Page:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            type: object
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageableObject:
+      type: object
+      properties:
+        offset:
+          type: integer
+          format: int64
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        paged:
+          type: boolean
+        pageNumber:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        unpaged:
+          type: boolean
+    SortObject:
+      type: object
+      properties:
+        direction:
+          type: string
+        nullHandling:
+          type: string
+        ascending:
+          type: boolean
+        property:
+          type: string
+        ignoreCase:
+          type: boolean
+    Pageable:
+      type: object
+      properties:
+        page:
+          minimum: 0
+          type: integer
+          format: int32
+        size:
+          minimum: 1
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            type: string
+    PageReportViewDTO:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportViewDTO"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageRecipeView:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeView"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    RecipeAdminViewDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        preparation_time:
+          type: integer
+          format: int32
+        cooking_time:
+          type: integer
+          format: int32
+        servings_size:
+          type: integer
+          format: int32
+        difficulty:
+          type: string
+          enum:
+          - VERY_EASY
+          - EASY
+          - MEDIUM
+          - HARD
+          - VERY_HARD
+        type_name:
+          type: string
+        recipeIngredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredientViewDto"
+        recipe_steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeStepViewDto"
+        tags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        author_note:
+          type: string
+        image_file_name:
+          type: string
+        owner_id:
+          type: string
+          format: uuid
+        is_public:
+          type: boolean
+        is_deleted:
+          type: boolean
+        language:
+          type: string
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+        like_count:
+          type: integer
+          format: int32
+    RecipeIngredientViewDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        ingredient_name:
+          type: string
+        quantity:
+          type: number
+          format: double
+        quantity_type:
+          type: string
+          enum:
+          - MG
+          - G
+          - KG
+          - LB
+          - OZ
+          - ML
+          - CL
+          - L
+          - CUP
+          - TBSP
+          - TSP
+          - FL_OZ
+          - UNIT
+          - SLICE
+          - PACK
+          - CAN
+          - BOTTLE
+          - PINCH
+          - DASH
+          - HEART
+          - CLOVE
+          - LEAF
+          - NONE
+        ingredient_state:
+          type: string
+          enum:
+          - WHOLE
+          - CHOPPED
+          - DICED
+          - MINCED
+          - GRATED
+          - SHREDDED
+          - GROUND
+          - CRUSHED
+          - SLICED
+          - FLAKED
+          - DRIED
+          - POWDERED
+          - RIBBONED
+          - PEELED
+          - LIQUID
+          - CRUSY
+          - MASHED
+          - FRESH
+          - MELTED
+          - FROZEN
+        note:
+          type: string
+    RecipeStepViewDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        step_number:
+          type: integer
+          format: int32
+        step_description:
+          type: string
+    RecipeUserViewDto:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        title:
+          type: string
+        description:
+          type: string
+        preparation_time:
+          type: integer
+          format: int32
+        cooking_time:
+          type: integer
+          format: int32
+        servings_size:
+          type: integer
+          format: int32
+        difficulty:
+          type: string
+          enum:
+          - VERY_EASY
+          - EASY
+          - MEDIUM
+          - HARD
+          - VERY_HARD
+        type_name:
+          type: string
+        recipeIngredients:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeIngredientViewDto"
+        recipe_steps:
+          type: array
+          items:
+            $ref: "#/components/schemas/RecipeStepViewDto"
+        tags:
+          uniqueItems: true
+          type: array
+          items:
+            type: string
+        author_note:
+          type: string
+        image_file_name:
+          type: string
+        owner_id:
+          type: string
+          format: uuid
+        is_public:
+          type: boolean
+        language:
+          type: string
+        createdDate:
+          type: string
+          format: date
+        updatedDate:
+          type: string
+          format: date
+        like_count:
+          type: integer
+          format: int32
+    RecipeView:
+      type: object
+      oneOf:
+      - $ref: "#/components/schemas/RecipeAdminViewDto"
+      - $ref: "#/components/schemas/RecipeUserViewDto"
+    CommentPublicView:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        content:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        owner_id:
+          type: string
+          format: uuid
+        parent_id:
+          type: string
+          format: uuid
+        parent_type:
+          type: string
+    CommentView:
+      type: object
+      oneOf:
+      - $ref: "#/components/schemas/CommentAdminView"
+      - $ref: "#/components/schemas/CommentPublicView"
+    PageCommentView:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommentView"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageIngredientView:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/IngredientView"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageIngredientTypeView:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/IngredientTypeView"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+    PageCommentAdminView:
+      type: object
+      properties:
+        totalPages:
+          type: integer
+          format: int32
+        totalElements:
+          type: integer
+          format: int64
+        size:
+          type: integer
+          format: int32
+        content:
+          type: array
+          items:
+            $ref: "#/components/schemas/CommentAdminView"
+        number:
+          type: integer
+          format: int32
+        sort:
+          type: array
+          items:
+            $ref: "#/components/schemas/SortObject"
+        numberOfElements:
+          type: integer
+          format: int32
+        pageable:
+          $ref: "#/components/schemas/PageableObject"
+        first:
+          type: boolean
+        last:
+          type: boolean
+        empty:
+          type: boolean
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
