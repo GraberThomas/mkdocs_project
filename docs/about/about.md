@@ -12,6 +12,7 @@ The **FeastVerse API** was developed as part of a university project with a focu
 The FeastVerse API was entirely developed by **Thomas Graber**, a passionate software engineer specializing in backend development, security, and API design.
 
 🔗 **GitHub Profile:** [GraberThomas](https://github.com/GraberThomas)
+
 📧 **Contact Email:** thomas.graber.pro@gmail.com
 
 ## 🔥 What's Next?
