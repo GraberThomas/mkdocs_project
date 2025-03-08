@@ -1,21 +1,21 @@
 # FAQ - FeastVerse API
 
-Bienvenue dans la FAQ de l'API **FeastVerse**. Cette API permet de gérer des recettes de cuisine, incluant les ingrédients, les commentaires et bien plus encore.
+Welcome to the **FeastVerse** API FAQ. This API allows you to manage cooking recipes, including ingredients, comments, and much more.
 
-## 1. Général
+## 1. General
 
-### Est-ce que l'API est gratuite ?
-Oui, l'API **FeastVerse** est entièrement gratuite d'utilisation.
+### Is the API free?
+Yes, the **FeastVerse** API is completely free to use.
 
-### Quel est le format des réponses de l'API ?
-Toutes les réponses sont retournées au format **JSON**.
+### What is the response format of the API?
+All responses are returned in **JSON** format.
 
-### Dois-je m'authentifier pour utiliser l'API ?
-Certaines fonctionnalités nécessitent une authentification via un **JWT token**, obtenu à l'aide de l'endpoint `/auth/sign-in`.
+### Do I need to authenticate to use the API?
+Some features require authentication via a **JWT token**, obtained using the `/auth/sign-in` endpoint.
 
-## 2. Utilisation de l'API
+## 2. Using the API
 
-### Comment récupérer toutes les recettes ?
+### How to retrieve all recipes?
 
 ```http
 GET /recipes HTTP/1.1
@@ -23,7 +23,7 @@ Host: api.feastverse.com
 Authorization: Bearer <token>
 ```
 
-### Comment ajouter une nouvelle recette ?
+### How to add a new recipe?
 
 ```http
 POST /recipes HTTP/1.1
@@ -32,19 +32,19 @@ Authorization: Bearer <token>
 Content-Type: application/json
 
 {
-  "title": "Tarte aux fraises",
+  "title": "Strawberry Tart",
   "ingredients": [
-    { "name": "Fraise", "quantity": 200, "unit": "g" },
-    { "name": "Sucre", "quantity": 50, "unit": "g" }
+    { "name": "Strawberry", "quantity": 200, "unit": "g" },
+    { "name": "Sugar", "quantity": 50, "unit": "g" }
   ],
   "steps": [
-    "Préparer la pâte.",
-    "Découper les fraises et les disposer sur la pâte."
+    "Prepare the dough.",
+    "Cut the strawberries and place them on the dough."
   ]
 }
 ```
 
-### Comment signaler un contenu inapproprié ?
+### How to report inappropriate content?
 
 ```http
 POST /reports HTTP/1.1
@@ -55,13 +55,13 @@ Content-Type: application/json
 {
   "targetId": "123e4567-e89b-12d3-a456-426614174000",
   "type": "INAPPROPRIATE_CONTENT",
-  "description": "Ce commentaire est offensant."
+  "description": "This comment is offensive."
 }
 ```
 
-## 3. Gestion des utilisateurs
+## 3. User Management
 
-### Comment s'inscrire ?
+### How to sign up?
 
 ```http
 POST /auth/signup HTTP/1.1
@@ -75,7 +75,7 @@ Content-Type: application/json
 }
 ```
 
-### Comment se connecter ?
+### How to log in?
 
 ```http
 POST /auth/sign-in HTTP/1.1
@@ -88,12 +88,12 @@ Content-Type: application/json
 }
 ```
 
-Si la connexion réussit, l'API retourne un **JWT token** qui doit être inclus dans les requêtes authentifiées.
+If the login is successful, the API returns a **JWT token** that must be included in authenticated requests.
 
 ## 4. Support & Contact
 
-### Comment obtenir de l'aide ?
-Si vous avez des questions ou rencontrez des problèmes, contactez **Thomas GRABER** par email : `thomas.graber.pro@gmail.com`.
+### How to get help?
+If you have questions or encounter issues, contact **Thomas GRABER** via email: `thomas.graber.pro@gmail.com`.
 
-### L'API a-t-elle une documentation complète ?
-Oui, la documentation complète est disponible dans l'onglet `API Docs API Endpoints - Swagger` et peut être consultée directement via l'interface utilisateur.
+### Does the API have complete documentation?
+Yes, the full documentation is available in the `API Docs / API FAQ` file and can be accessed directly via the user interface.
