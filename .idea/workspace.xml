@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): add architecture page">
-      <change afterPath="$PROJECT_DIR$/docs/annex/glossary-references.md" afterDir="false" />
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="build(docker): dockerfile now build the app">
+      <change afterPath="$PROJECT_DIR$/readme.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Dockerfile" beforeDir="false" afterPath="$PROJECT_DIR$/Dockerfile" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +84,7 @@
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
       <workItem from="1741379254634" duration="3648000" />
-      <workItem from="1741440121658" duration="4440000" />
+      <workItem from="1741440121658" duration="6652000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -255,7 +254,23 @@
       <option name="project" value="LOCAL" />
       <updated>1741443549477</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="feat(doc): add glossary reference page">
+      <option name="closed" value="true" />
+      <created>1741447342616</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1741447342616</updated>
+    </task>
+    <task id="LOCAL-00023" summary="build(docker): dockerfile now build the app">
+      <option name="closed" value="true" />
+      <created>1741447383863</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1741447383863</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -282,7 +297,9 @@
     <MESSAGE value="feat(doc): api about page" />
     <MESSAGE value="feat(doc): licence page" />
     <MESSAGE value="feat(doc): add architecture page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): add architecture page" />
+    <MESSAGE value="feat(doc): add glossary reference page" />
+    <MESSAGE value="build(docker): dockerfile now build the app" />
+    <option name="LAST_COMMIT_MESSAGE" value="build(docker): dockerfile now build the app" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
