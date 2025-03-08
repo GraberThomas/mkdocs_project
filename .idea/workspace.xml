@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="docs(readme): add link to deployed docs" />
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="ci(action): rename action file" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,7 +81,7 @@
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
       <workItem from="1741379254634" duration="3648000" />
-      <workItem from="1741440121658" duration="7767000" />
+      <workItem from="1741440121658" duration="8119000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -299,14 +299,29 @@
       <option name="project" value="LOCAL" />
       <updated>1741449750248</updated>
     </task>
-    <option name="localTasksCounter" value="28" />
+    <task id="LOCAL-00028" summary="docs(readme): add link to deployed docs">
+      <option name="closed" value="true" />
+      <created>1741449827259</created>
+      <option name="number" value="00028" />
+      <option name="presentableId" value="LOCAL-00028" />
+      <option name="project" value="LOCAL" />
+      <updated>1741449827259</updated>
+    </task>
+    <task id="LOCAL-00029" summary="ci(action): rename action file">
+      <option name="closed" value="true" />
+      <created>1741450101482</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1741450101482</updated>
+    </task>
+    <option name="localTasksCounter" value="30" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="build(dependencies): add mkdocs" />
     <MESSAGE value="ci(settings): pycharm settings" />
     <MESSAGE value="ci(git): add gitignore" />
     <MESSAGE value="feat(docker): add dockerFile for serve build production" />
@@ -331,7 +346,8 @@
     <MESSAGE value="feat(doc): add mail in about contact" />
     <MESSAGE value="ci(action): deploy on docker when main change" />
     <MESSAGE value="docs(readme): add link to deployed docs" />
-    <option name="LAST_COMMIT_MESSAGE" value="docs(readme): add link to deployed docs" />
+    <MESSAGE value="ci(action): rename action file" />
+    <option name="LAST_COMMIT_MESSAGE" value="ci(action): rename action file" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
