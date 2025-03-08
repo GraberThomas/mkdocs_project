@@ -1,0 +1,1 @@
+<swagger-ui src="../annex/api-docs.yaml"/>
