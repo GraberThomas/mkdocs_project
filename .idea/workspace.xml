@@ -4,10 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): add api auth page">
-      <change afterPath="$PROJECT_DIR$/docs/api-docs/api-endpoints.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/docs/api-docs/api-faq.md" afterDir="false" />
+    <list default="true" id="59a74e7f-f76b-48c9-9c52-8ae641536d59" name="Changes" comment="feat(doc): add api-faq page">
+      <change afterPath="$PROJECT_DIR$/docs/product-docs/api-features.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/docs/api-docs/api-faq.md" beforeDir="false" afterPath="$PROJECT_DIR$/docs/api-docs/api-faq.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -79,7 +79,7 @@
       <updated>1741375014085</updated>
       <workItem from="1741375015107" duration="2209000" />
       <workItem from="1741377231973" duration="1450000" />
-      <workItem from="1741379254634" duration="2769000" />
+      <workItem from="1741379254634" duration="3050000" />
     </task>
     <task id="LOCAL-00001" summary="pycharm settings">
       <option name="closed" value="true" />
@@ -153,7 +153,31 @@
       <option name="project" value="LOCAL" />
       <updated>1741380374692</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="feat(doc): add swagger document">
+      <option name="closed" value="true" />
+      <created>1741436302337</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1741436302337</updated>
+    </task>
+    <task id="LOCAL-00011" summary="feat(doc): add swagger doc page">
+      <option name="closed" value="true" />
+      <created>1741436315073</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1741436315073</updated>
+    </task>
+    <task id="LOCAL-00012" summary="feat(doc): add api-faq page">
+      <option name="closed" value="true" />
+      <created>1741436323105</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1741436323105</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -168,7 +192,10 @@
     <MESSAGE value="build(dependencies): change theme and add needed plugins" />
     <MESSAGE value="feat(doc): add main page and logo" />
     <MESSAGE value="feat(doc): add api auth page" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): add api auth page" />
+    <MESSAGE value="feat(doc): add swagger document" />
+    <MESSAGE value="feat(doc): add swagger doc page" />
+    <MESSAGE value="feat(doc): add api-faq page" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(doc): add api-faq page" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
