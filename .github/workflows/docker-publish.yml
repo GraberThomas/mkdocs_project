@@ -51,4 +51,4 @@ jobs:
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs:latest
             docker stop ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs || true
             docker rm ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs || true
-            docker run -d --name cicdapp -p 3036:80 ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs:latest
+            docker run -d --name featverse_docs -p 3036:80 ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs:latest
