@@ -13,6 +13,20 @@ jobs:
       - name: 🛎 Checkout repository
         uses: actions/checkout@v4
 
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: 📦 Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: ✅ Run Pytest
+        run: |
+          pytest .
+
       - name: 🔑 Login to Docker Hub
         uses: docker/login-action@v2
         with:
@@ -26,10 +40,15 @@ jobs:
       - name: 🚀 Push Docker image
         run: |
           docker push ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs:latest
-      
-      - name: 🔄 Trigger Railway Deployment
-        run: |
-          curl -X POST "https://backboard.railway.app/graphql/v2" \
-          -H "Authorization: Bearer ${{ secrets.RAILWAY_API_TOKEN }}" \
-          -H "Content-Type: application/json" \
-          --data '{"query":"mutation serviceInstanceDeploy($serviceId: String!, $environmentId: String!) { serviceInstanceDeploy(serviceId: $serviceId, environmentId: $environmentId) }","variables":{"serviceId":"${{ secrets.RAILWAY_SERVICE_ID }}","environmentId":"${{ secrets.RAILWAY_ENVIRONMENT_ID }}"}}'
+
+      - name: 🧑‍💻 Deploy on VPS
+        uses: appleboy/ssh-action@v1.0.0
+        with:
+          host: ${{ secrets.VPS_HOST }}
+          username: ${{ secrets.VPS_USER }}
+          key: ${{ secrets.VPS_SSH_KEY }}
+          script: |
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs:latest
+            docker stop cicdapp || true
+            docker rm cicdapp || true
+            docker run -d --name cicdapp -p 3036:80 ${{ secrets.DOCKER_HUB_USERNAME }}/featverse_docs:latest
