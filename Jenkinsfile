@@ -2,11 +2,6 @@ pipeline {
   agent any
 
   stages {
-    stage('Checkout') {
-      steps {
-        git 'https://github.com/monuser/monrepo.git'
-      }
-    }
     stage('Build') {
       steps {
         sh 'docker build -t monimage:test .'
